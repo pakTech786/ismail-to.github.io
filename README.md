@@ -1,17 +1,6 @@
-# Astro IsMail Template
+# IsMail website (Astro)
 
-A modern, responsive Astro template with Tailwind CSS and Alpine.js integration. This template provides a solid foundation for building fast, SEO-friendly websites with a clean design system.
-
-## 🚀 Features
-
-- [Astro](https://astro.build/) - The web framework for content-driven websites
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [Alpine.js](https://alpinejs.dev/) - Lightweight JavaScript framework for interactivity
-- Responsive design system with custom color palette
-- Dark mode support
-- Smooth page transitions
-- Performance optimized
-- SEO-friendly
+This is the official website code of [IsMail](https://ismail.to). 
 
 ## 📦 Project Structure
 
@@ -59,19 +48,6 @@ The template includes a custom color palette defined in `tailwind.config.mjs`:
 
 You can customize these colors by editing the `tailwind.config.mjs` file.
 
-### Typography
-
-The template uses the following font families:
-
-- Sans: Inter (with system fallbacks)
-- Display: Lexend (with system fallbacks)
-
-### Animations
-
-Custom animations are included:
-- Fade In
-- Slide Up
-- Slide Down
 
 ## 🚀 Getting Started
 
@@ -80,8 +56,9 @@ Custom animations are included:
 3. Start the development server with `npm run dev` or `pnpm dev`
 4. Visit `http://localhost:4321` to see your site
 
-## 👀 Learn More
 
+## 👀 Tech Stacks
 - [Astro Documentation](https://docs.astro.build)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [Alpine.js Documentation](https://alpinejs.dev/start-here)
+- [Directus Documentation](https://directus.io/docs)
