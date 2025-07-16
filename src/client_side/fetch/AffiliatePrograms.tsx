@@ -1,4 +1,4 @@
-export const DIRECTUS_URL = 'https://ismail.directus.app';
+export const DIRECTUS_URL = 'https://directus.ismail.to';
 
 export default async function fetchAffiliateProgramModel(): Promise<AffiliateProgramResponseData[]> {
     const active_filter = "filter[is_active][_eq]=true"

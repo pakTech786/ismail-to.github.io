@@ -262,7 +262,7 @@ import { KEYWORDS } from "../constant";
                     errors.email = 'Please enter a valid email';
                   if (!message) errors.message = 'Please enter your message';
                   if (Object.keys(errors).length === 0) {
-                    fetch('https://ismail.directus.app/items/messages', {
+                    fetch('https://directus.ismail.to/items/messages', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json',
