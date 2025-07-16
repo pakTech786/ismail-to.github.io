@@ -62,3 +62,7 @@ You can customize these colors by editing the `tailwind.config.mjs` file.
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [Alpine.js Documentation](https://alpinejs.dev/start-here)
 - [Directus Documentation](https://directus.io/docs)
+
+
+## Dependencies
+- [Self-hosted Directus CMS](directus.ismail.to)
