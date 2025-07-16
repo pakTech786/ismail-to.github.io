@@ -2,7 +2,7 @@ export const DIRECTUS_URL = 'https://directus.ismail.to';
 
 export default async function fetchAffiliateProgramModel(): Promise<AffiliateProgramResponseData[]> {
     const active_filter = "filter[is_active][_eq]=true"
-    const fields = "id,url,name,summary,description,image,deal_description,tags.tags_id.name"
+    const fields = "id,referral_link,name,summary,description,image,deal_description,tags.tags_id.name"
     const res = await fetch(
         `${DIRECTUS_URL}/items/affiliate_programs?${active_filter}&fields=${fields}`
     );
@@ -16,7 +16,7 @@ export default async function fetchAffiliateProgramModel(): Promise<AffiliatePro
 
 export interface AffiliateProgramResponseData {
     id: number;
-    url: string;
+    referral_link: string;
     name: string;
     summary: string;
     description: string;

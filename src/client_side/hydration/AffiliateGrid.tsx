@@ -44,7 +44,7 @@ export default function AffiliateGrid() {
                                     </span>
                                 ))}
                             </div>
-                            <a href={partner.url} className="btn btn-secondary block w-full text-sm">
+                            <a href={partner.referral_link} className="btn btn-secondary block w-full text-sm">
                                 Referral Link
                             </a>
                         </div>
