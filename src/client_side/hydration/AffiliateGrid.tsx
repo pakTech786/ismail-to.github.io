@@ -18,13 +18,18 @@ export default function AffiliateGrid() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {data.map((partner) => (
                 <div key={partner.id} className="card flex flex-col">
-                    {partner.image && (
+                    <a href={partner.website_link}>
                         <img
-                            src={`${DIRECTUS_URL}/assets/${partner.image}`}
+                            src={
+                                partner.image
+                                    ? `${DIRECTUS_URL}/assets/${partner.image}`
+                                    : '/gradient.jpg'
+                            }
                             alt={partner.name}
                             className="w-full h-40 object-cover"
                         />
-                    )}
+                    </a>
+
                     <div className="flex flex-col justify-between flex-1 p-4">
                         {/* Top section: name and summary */}
                         <div>
