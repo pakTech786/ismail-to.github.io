@@ -4,6 +4,7 @@ import fetchAffiliatePrograms, { DIRECTUS_URL, type AffiliateProgramResponseData
 export default function AffiliateGrid() {
     const [data, setData] = useState<AffiliateProgramResponseData[]>([]);
     const [loading, setLoading] = useState(true);
+    const quality = 1;    // on a scale from 1-100
 
     useEffect(() => {
         fetchAffiliatePrograms()
@@ -22,7 +23,7 @@ export default function AffiliateGrid() {
                         <img
                             src={
                                 partner.image
-                                    ? `${DIRECTUS_URL}/assets/${partner.image}`
+                                    ? `${DIRECTUS_URL}/assets/${partner.image}?quality=${quality}`
                                     : '/gradient.jpg'
                             }
                             alt={partner.name}
