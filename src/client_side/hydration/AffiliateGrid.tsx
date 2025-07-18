@@ -4,7 +4,7 @@ import fetchAffiliatePrograms, { DIRECTUS_URL, type AffiliateProgramResponseData
 export default function AffiliateGrid() {
     const [data, setData] = useState<AffiliateProgramResponseData[]>([]);
     const [loading, setLoading] = useState(true);
-    const quality = 1;    // on a scale from 1-100
+    const quality = 50;    // on a scale from 1-100
 
     useEffect(() => {
         fetchAffiliatePrograms()
