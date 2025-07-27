@@ -1,14 +1,13 @@
-
 ---
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import HeroSection from "../../components/HeroSection.astro";
-
-// Fetch from your API
-const apiUrl = 'https://directus.ismail.to/items/blog_posts'; // replace with real endpoint
-const baseImageUrl = 'https://directus.ismail.to/assets/'; // for og_image
-
+const siteUrl = import.meta.env.PUBLIC_SITE_URL;
+// Directus API setup
+const apiUrl = 'https://directus.ismail.to/items/blog_posts?fields=*,user_created.id,user_created.first_name,user_created.last_name,user_created.avatar,user_created.role.id,user_created.role.name&sort=-date_created';
+const baseImageUrl = 'https://directus.ismail.to/assets/';
+const siteUrl="";
 const res = await fetch(apiUrl);
 if (!res.ok) {
   throw new Error("Failed to fetch blog posts");
@@ -17,20 +16,25 @@ if (!res.ok) {
 const response = await res.json();
 const postsRaw = response.data;
 
-// Map to the format your template expects
-const posts = postsRaw.map((post) => ({
-  id: post.slug,
-  title: post.subject,
-  excerpt: post.content.replace(/<[^>]+>/g, '').slice(0, 180) + "...", // strip HTML for excerpt
-  date: new Date(post.date_created).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
-  author: "Admin", // Replace or fetch from relationship
-  authorRole: "Content Writer", // Same
-  authorAvatar: "https://randomuser.me/api/portraits/lego/1.jpg", // or your own avatar
-  category: "Marketing", // Or map from category ID if available
-  image: baseImageUrl + post.og_image,
-}));
+// Format the blog posts
+const posts = postsRaw.map((post) => {
+  const user = post.user_created || {};
+  const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ');
+  const role = user.role?.name || "Contributor";
+  const avatar = user.avatar ? baseImageUrl + user.avatar : "https://randomuser.me/api/portraits/lego/1.jpg";
 
-
+  return {
+    id: post.slug,
+    title: post.subject,
+    excerpt: post.content.replace(/<[^>]+>/g, '').slice(0, 180) + "...",
+    date: new Date(post.date_created).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
+    author: fullName || "Anonymous",
+    authorRole: role,
+    authorAvatar: avatar,
+    category: post.category || "General",
+    image: baseImageUrl + post.og_image,
+  };
+});
 
 const categories = [...new Set(posts.map((post) => post.category))];
 ---
@@ -38,6 +42,8 @@ const categories = [...new Set(posts.map((post) => post.category))];
 <Layout
   title="Blog - IsMail"
   description="Latest product updates, feature releases, and company news from IsMail."
+  url={siteUrl}
+
 >
   <Header />
   <main>
@@ -51,30 +57,35 @@ const categories = [...new Set(posts.map((post) => post.category))];
     <div class="container-custom py-8">
       <div class="flex flex-wrap gap-4 justify-center mb-12">
         <a
-          href="#"
-          class="px-4 py-2 rounded-full bg-primary-600 text-white font-medium text-sm hover:bg-primary-700 transition-colors"
-        >
-          All Posts
-        </a>
-        {
-          categories.map((category) => (
-            <a
-              href={"#" + category.toLowerCase().replace(/\s+/g, "-")}
-              class="px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-            >
-              {category}
-            </a>
-          ))
-        }
+  href="#"
+  data-filter="all"
+  class="category-btn px-4 py-2 rounded-full bg-primary-600 text-white font-medium text-sm hover:bg-primary-700 transition-colors"
+>
+  All Posts
+</a>
+
+{
+  categories.map((category) => (
+    <a
+      href="#"
+      data-filter={category.toLowerCase().replace(/\s+/g, "-")}
+      class="category-btn px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+    >
+      {category}
+    </a>
+  ))
+}
+
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {
           posts.map((post, index) => (
             <div
-              class="card border border-gray-200 dark:border-gray-700 overflow-hidden slide-up"
-              style={"animation-delay: " + index * 100 + "ms"}
-            >
+  class="card border border-gray-200 dark:border-gray-700 overflow-hidden slide-up"
+  style={"animation-delay: " + index * 100 + "ms"}
+  data-category={post.category.toLowerCase().replace(/\s+/g, "-")}
+>
               <a href={"/blog/" + post.id} class="block">
                 <img
                   src={post.image}
@@ -135,7 +146,8 @@ const categories = [...new Set(posts.map((post) => post.category))];
             <path
               fill-rule="evenodd"
               d="M10 3a1 1 0 011 1v10.586l3.293-3.293a1 1 0 011.414 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 111.414-1.414L9 14.586V4a1 1 0 011-1z"
-              clip-rule="evenodd"></path>
+              clip-rule="evenodd"
+            ></path>
           </svg>
         </a>
       </div>
@@ -143,3 +155,25 @@ const categories = [...new Set(posts.map((post) => post.category))];
   </main>
   <Footer />
 </Layout>
+<script is:inline>
+  document.querySelectorAll('.category-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      const filter = button.getAttribute('data-filter');
+
+      document.querySelectorAll('.category-btn').forEach(btn =>
+        btn.classList.remove('bg-primary-600', 'text-white')
+      );
+      button.classList.add('bg-primary-600', 'text-white');
+
+      document.querySelectorAll('.card').forEach(card => {
+        const postCategory = card.getAttribute('data-category');
+        if (filter === 'all' || postCategory === filter) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
