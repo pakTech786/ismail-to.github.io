@@ -7,7 +7,6 @@ const siteUrl = import.meta.env.PUBLIC_SITE_URL;
 // Directus API setup
 const apiUrl = 'https://directus.ismail.to/items/blog_posts?fields=*,user_created.id,user_created.first_name,user_created.last_name,user_created.avatar,user_created.role.id,user_created.role.name&sort=-date_created';
 const baseImageUrl = 'https://directus.ismail.to/assets/';
-const siteUrl="";
 const res = await fetch(apiUrl);
 if (!res.ok) {
   throw new Error("Failed to fetch blog posts");
